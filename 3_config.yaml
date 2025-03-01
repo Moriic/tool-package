@@ -1,0 +1,49 @@
+port: 7890
+mode: global
+log-level: info
+external-controller: "0.0.0.0:9090"
+external-ui: ui
+secret: ""
+ipv6: true
+
+proxies:
+  - name: "Japan"
+    type: http
+    server: japan.cwcn.eu.org
+    port: 443
+    username: cwc
+    password: "qq1219533124."
+    tls: true # https
+    skip-cert-verify: true  
+  - name: "unlock"
+    type: http
+    server: asia.cwcn.eu.org
+    port: 443
+    username: cwc
+    password: "qq1219533124."
+    tls: true # https
+    skip-cert-verify: true  
+ 
+# 配置 Group
+proxy-groups:
+  # 自动切换
+  - name: "azure"
+    type: select
+    proxies:
+      - Japan
+      - unlock
+    url: "https://www.google.com/"
+    interval: 300
+
+rules:
+  # LAN
+  - DOMAIN-SUFFIX,local,DIRECT
+  - IP-CIDR,127.0.0.0/8,DIRECT
+  - IP-CIDR,172.16.0.0/12,DIRECT
+  - IP-CIDR,192.168.0.0/16,DIRECT
+  - IP-CIDR,10.0.0.0/8,DIRECT
+  - IP-CIDR,47.76.180.81/32,DIRECT
+
+  # 最终规则（除了中国区的IP之外的，全部翻墙）
+  - GEOIP,CN,DIRECT
+  - MATCH,azure

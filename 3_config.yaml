@@ -17,12 +17,21 @@ proxies:
     skip-cert-verify: true  
   - name: "unlock"
     type: http
-    server: asia.cwcn.eu.org
+    server:  2603:1040:2:8::21
     port: 443
     username: cwc
     password: "qq1219533124."
     tls: true # https
     skip-cert-verify: true  
+  - name: "unlockgz"
+    type: http
+    server: 2408:400d:1119:2302:c266:e12a:5298:9c39
+    port: 443
+    username: cwc
+    password: "qq1219533124."
+    # tls: true # https
+    # skip-cert-verify: true  
+ 
  
 # 配置 Group
 proxy-groups:
@@ -32,6 +41,7 @@ proxy-groups:
     proxies:
       - Japan
       - unlock
+      - unlockgz
     url: "https://www.google.com/"
     interval: 300
 

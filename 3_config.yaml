@@ -15,15 +15,7 @@ proxies:
     password: "qq1219533124."
     tls: true # https
     skip-cert-verify: true  
-  - name: "unlock"
-    type: http
-    server:  2603:1040:2:8::21
-    port: 443
-    username: cwc
-    password: "qq1219533124."
-    tls: true # https
-    skip-cert-verify: true  
-  - name: "unlockgz"
+  - name: "gz_ipv6"
     type: http
     server: 2408:400d:1119:2302:c266:e12a:5298:9c39
     port: 443
@@ -31,6 +23,22 @@ proxies:
     password: "qq1219533124."
     # tls: true # https
     # skip-cert-verify: true  
+  - name: "hk_ipv4"
+    type: http
+    server: 52.175.11.75
+    port: 443
+    username: cwc
+    password: "qq1219533124."
+    tls: true # https
+    skip-cert-verify: true  
+  - name: "hk_ipv6"
+    type: http
+    server: 2001:250:3c00:3487:9298:38ff:fea6:b308 
+    port: 443
+    username: cwc
+    password: "qq1219533124."
+    tls: true # https
+    skip-cert-verify: true  
  
  
 # 配置 Group
@@ -40,8 +48,7 @@ proxy-groups:
     type: select
     proxies:
       - Japan
-      - unlock
-      - unlockgz
+      - hk_ipv4
     url: "https://www.google.com/"
     interval: 300
 

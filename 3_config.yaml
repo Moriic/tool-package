@@ -40,7 +40,14 @@ proxy-groups:
     type: select
     proxies:
       - Japan
+      - hk_ipv6
       - hk_ipv4
+    url: "https://www.google.com/"
+    interval: 300
+  - name: "GPT4"
+    type: select
+    proxies:
+      - Japan
     url: "https://www.google.com/"
     interval: 300
 
@@ -53,6 +60,8 @@ rules:
   - IP-CIDR,10.0.0.0/8,DIRECT
   - IP-CIDR,47.76.180.81/32,DIRECT
 
+  - 'DOMAIN-SUFFIX,chatgpt.com,GPT4'
+  - 'DOMAIN-SUFFIX,openai.com,GPT4'
   # 最终规则（除了中国区的IP之外的，全部翻墙）
-  - GEOIP,CN,DIRECT
+  # - GEOIP,CN,DIRECT
   - MATCH,azure

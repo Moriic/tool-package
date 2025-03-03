@@ -63,5 +63,5 @@ rules:
   - 'DOMAIN-SUFFIX,chatgpt.com,GPT4'
   - 'DOMAIN-SUFFIX,openai.com,GPT4'
   # 最终规则（除了中国区的IP之外的，全部翻墙）
-  # - GEOIP,CN,DIRECT
+  - GEOIP,CN,DIRECT
   - MATCH,azure

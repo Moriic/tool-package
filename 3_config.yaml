@@ -7,9 +7,17 @@ secret: ""
 ipv6: true
 
 proxies:
-  - name: "Japan"
+  - name: "jp_ipv4"
     type: http
-    server: japan.cwcn.eu.org
+    server: 130.33.179.124
+    port: 443
+    username: cwc
+    password: "qq1219533124."
+    tls: true # https
+    skip-cert-verify: true  
+  - name: "jp_ipv6"
+    type: http
+    server: 2603:1040:401:e::120
     port: 443
     username: cwc
     password: "qq1219533124."
@@ -39,15 +47,17 @@ proxy-groups:
   - name: "azure"
     type: select
     proxies:
-      - Japan
-      - hk_ipv6
+      - jp_ipv4
       - hk_ipv4
+      - jp_ipv6
+      - hk_ipv6
     url: "https://www.google.com/"
     interval: 300
   - name: "GPT4"
     type: select
     proxies:
-      - Japan
+      - jp_ipv4
+      - jp_ipv6
     url: "https://www.google.com/"
     interval: 300
 

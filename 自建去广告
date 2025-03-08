@@ -1,0 +1,120 @@
+port: 7890
+mode: rule
+log-level: info
+external-controller: "0.0.0.0:9090"
+external-ui: ui
+secret: ""
+ipv6: true
+
+proxies:
+  - name: "jp_ipv4"
+    type: http
+    server: 130.33.179.124
+    port: 443
+    username: cwc
+    password: "qq1219533124."
+    tls: true # https
+    skip-cert-verify: true  
+  - name: "jp_ipv6"
+    type: http
+    server: 2603:1040:401:e::120
+    port: 443
+    username: cwc
+    password: "qq1219533124."
+    tls: true # https
+    skip-cert-verify: true  
+  - name: "hk_ipv4"
+    type: http
+    server: 52.175.11.75
+    port: 443
+    username: cwc
+    password: "qq1219533124."
+    tls: true # https
+    skip-cert-verify: true  
+  - name: "hk_ipv6"
+    type: http
+    server: 2a01:111:f102:8001::1761:4c41
+    port: 443
+    username: cwc
+    password: "qq1219533124."
+    tls: true # https
+    skip-cert-verify: true  
+ 
+ 
+# 配置 Group
+proxy-groups:
+  # 自动切换
+  - name: "azure"
+    type: select
+    proxies:
+      - jp_ipv4
+      - hk_ipv4
+      - jp_ipv6
+      - hk_ipv6
+    url: "https://www.google.com/"
+    interval: 300
+  - name: "GPT4"
+    type: select
+    proxies:
+      - jp_ipv4
+      - jp_ipv6
+    url: "https://www.google.com/"
+    interval: 300
+
+rule-providers:
+  AD:
+    type: http
+    behavior: domain
+    url: "https://raw.githubusercontent.com/earoftoast/clash-rules/main/AD.yaml"
+    path: ./rules/AD.yaml
+    interval: 86400
+    
+  EasyList:
+    type: http
+    behavior: domain
+    url: "https://raw.githubusercontent.com/earoftoast/clash-rules/main/EasyList.yaml"
+    path: ./rules/EasyList.yaml
+    interval: 86400
+    
+  EasyListChina:
+    type: http
+    behavior: domain
+    url: "https://raw.githubusercontent.com/earoftoast/clash-rules/main/EasyListChina.yaml"
+    path: ./rules/EasyListChina.yaml
+    interval: 86400
+
+  EasyPrivacy:
+    type: http
+    behavior: domain
+    url: "https://raw.githubusercontent.com/earoftoast/clash-rules/main/EasyPrivacy.yaml"
+    path: ./rules/EasyPrivacy.yaml
+    interval: 86400
+
+  ProgramAD:
+    type: http
+    behavior: domain
+    url: "https://raw.githubusercontent.com/earoftoast/clash-rules/main/ProgramAD.yaml"
+    path: ./rules/ProgramAD.yaml
+    interval: 86400
+
+rules:
+  - RULE-SET,AD,REJECT
+  - RULE-SET,EasyList,REJECT
+  - RULE-SET,EasyListChina,REJECT
+  - RULE-SET,EasyPrivacy,REJECT
+  - RULE-SET,ProgramAD,REJECT
+  # LAN
+  - DOMAIN-SUFFIX,local,DIRECT
+  - IP-CIDR,127.0.0.0/8,DIRECT
+  - IP-CIDR,172.16.0.0/12,DIRECT
+  - IP-CIDR,192.168.0.0/8,DIRECT
+  - IP-CIDR,10.0.0.0/8,DIRECT
+  - IP-CIDR,47.76.180.81/32,DIRECT
+
+  - 'DOMAIN-SUFFIX,chatgpt.com,GPT4'
+  - 'DOMAIN-SUFFIX,openai.com,GPT4'
+  - DOMAIN-KEYWORD,google,GPT4
+  - DOMAIN-KEYWORD,scholar,GPT4
+  # 最终规则（除了中国区的IP之外的，全部翻墙）
+  - GEOIP,CN,DIRECT
+  - MATCH,azure
